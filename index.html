@@ -22,7 +22,7 @@
 </div>
 <div class="card note"><b>Важно:</b> «Аварийно-спасательная подготовка на высоте» в версии 8.1 — <b>72 академических часа, 18 недель</b>, по рабочей программе КГАПОУ «Артёмовский колледж сервиса и дизайна» на 2026–2027 учебный год.</div>
 </section>
-<section id="schedule" class="page"><div class="card"><div class="row"><div><h2 id="weekTitle" style="margin:0"></h2><span class="muted">Недельное расписание</span></div><div class="actions"><button onclick="shift(-7)">←</button><button onclick="today()">Сегодня</button><button onclick="shift(7)">→</button></div></div><hr><div class="actions"><button class="primary" onclick="copyWeek()">Копировать неделю → следующая</button><button onclick="window.print()">🖨 Печать</button><button class="primary" onclick="addForScheduleDate()">＋ Добавить занятие</button><button onclick="document.getElementById('xlsxInput').click()">📥 Импорт расписания Excel</button></div></div><div id="week" class="week"></div></section>
+<section id="schedule" class="page"><div class="card"><div class="row"><div><h2 id="weekTitle" style="margin:0"></h2><span class="muted">Недельное расписание</span></div><div class="actions"><button onclick="shift(-7)">←</button><button onclick="today()">Сегодня</button><button onclick="shift(7)">→</button></div></div><hr><div class="actions"><button class="primary" onclick="copyWeek()">Копировать неделю → следующая</button><button onclick="window.print()">🖨 Печать</button><button class="primary" onclick="addForScheduleDate()">＋ Добавить занятие вручную</button><button onclick="document.getElementById('xlsxInput').click()">📥 Импорт расписания Excel</button></div></div><div id="week" class="week"></div></section>
 <section id="add" class="page"><div class="card"><div class="row"><h2 id="lessonFormTitle" style="margin:0">Добавить занятие</h2><button type="button" onclick="show('schedule')">← К расписанию</button></div><input id="editingLessonId" type="hidden"><form id="lessonForm"><div class="grid"><div><label>Дата</label><input id="date" type="date" required></div><div><label>Семестр</label><select id="semester"><option value="1">1 семестр</option><option value="2">2 семестр</option></select></div><div><label>Пара</label><select id="period"></select></div><div><label>Дисциплина</label><select id="subject"></select></div><div><label>Группа</label><select id="group"></select></div><div><label>Кабинет</label><input id="room"></div><div><label>Тема КТП</label><select id="ktpChoice"></select></div><div><label>Начало</label><input id="start" type="time" required></div><div><label>Окончание</label><input id="end" type="time" required></div></div><br><div class="actions"><button id="lessonSaveBtn" class="primary">Сохранить занятие</button><button type="button" onclick="resetLessonForm()">Отмена</button></div></form></div></section>
 <section id="groups" class="page"><div class="card"><h2>Группы</h2><form id="groupForm" class="actions"><input id="newGroup" placeholder="С-21" required><button class="primary">Добавить</button></form><div id="groupList"></div></div></section>
 <section id="students" class="page">
@@ -139,7 +139,7 @@ function exportExcel(){
   add("Журнал",rows);
   let v=[["Группа","Студент","Оценок","Средний балл","Пропуски","Итог"]];
   data.students.forEach(s=>{let vals=[],a=0;data.lessons.forEach(l=>{if(data.marks[l.id]?.[s.id])vals.push(+data.marks[l.id][s.id]);if(data.attendance[l.id]?.[s.id]&&data.attendance[l.id][s.id]!=="Был")a++});let avg=vals.length?vals.reduce((x,y)=>x+y,0)/vals.length:0;v.push([s.group,s.name,vals.length,avg?+avg.toFixed(2):"",a,avg?Math.round(avg):""])});
-  add("Ведомость",v); XLSX.writeFile(wb,"moe_raspisanie_9_2_отчёт.xlsx");
+  add("Ведомость",v); XLSX.writeFile(wb,"moe_raspisanie_9_3_отчёт.xlsx");
 }
 function exportCSV(){let rows=[["Дата","Семестр","Пара","Начало","Конец","Группа","Дисциплина","Тема","Проведено","Студент","Посещение","Оценка"]];data.lessons.sort((a,b)=>(a.date+a.start).localeCompare(b.date+b.start)).forEach(l=>{let st=data.students.filter(s=>s.group===l.group);if(!st.length)rows.push([l.date,l.semester,l.period,l.start,l.end,l.group,l.subject,l.topic,l.done?"Да":"Нет","","",""]);else st.forEach(s=>rows.push([l.date,l.semester,l.period,l.start,l.end,l.group,l.subject,l.topic,l.done?"Да":"Нет",s.name,data.attendance[l.id]?.[s.id]||"Был",data.marks[l.id]?.[s.id]||""]))});let csv="\\ufeff"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\\r\\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="zhurnal_"+fmt(new Date())+".csv";a.click()}
 function downloadTemplate(){
@@ -153,7 +153,7 @@ function downloadTemplate(){
     "Инструкция":[["Лист","Что заполнять"],["Группы","Одна группа в строке"],["Студенты","Группа + Фамилия и имя"],["КТП","Семестр, № темы, дисциплина, тема, часы, тип"],["Расписание","Дата, семестр, пара, время, группа, дисциплина, кабинет, тема, № темы КТП"]]
   };
   Object.entries(sheets).forEach(([n,rows])=>XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),n));
-  XLSX.writeFile(wb,"moe_raspisanie_9_2_template.xlsx");
+  XLSX.writeFile(wb,"moe_raspisanie_9_3_template.xlsx");
 }
 function norm(v){return String(v??"").trim()}
 function sheetRows(wb,name){let ws=wb.Sheets[name];return ws?XLSX.utils.sheet_to_json(ws,{defval:""}):[]}
@@ -325,10 +325,10 @@ function renderProgramKtp(){
  let n=$("programFilter").value,p=BUILTIN_PROGRAMS[n];
  $("programKtp").innerHTML=p.topics.map(t=>`<tr><td>${t[0]}</td><td>${esc(t[1])}</td><td>${t[2]}</td><td>${t[3]}</td><td><b>${t[4]}</b></td></tr>`).join("");
 }
-function installPrograms(silent=false){let now=0;const names=Object.keys(BUILTIN_PROGRAMS);data.subjects=names.slice();data.ktp=(data.ktp||[]).filter(k=>names.includes(k.subject));data.lessons=(data.lessons||[]).filter(l=>names.includes(l.subject));for(const [subject,p] of Object.entries(BUILTIN_PROGRAMS)){p.topics.forEach(t=>{let [num,topic,theory,practice,hours]=t;let exists=data.ktp.find(k=>k.semester===1&&k.subject===subject&&String(k.num)===String(num));if(!exists){data.ktp.push({id:Date.now()+Math.random(),semester:1,subject,num,hours,theory,practice,type:practice>0&&theory>0?"Комбинированное":practice>0?"Практика":"Лекция",topic});now++}})}data._programVersion="9.2";data._appVersion="9.2";save();render();if(!silent)alert(`Готово. Установлены 4 программы. Добавлено тем КТП: ${now}.`)}
+function installPrograms(silent=false){let now=0;const names=Object.keys(BUILTIN_PROGRAMS);data.subjects=names.slice();data.ktp=(data.ktp||[]).filter(k=>names.includes(k.subject));data.lessons=(data.lessons||[]).filter(l=>names.includes(l.subject));for(const [subject,p] of Object.entries(BUILTIN_PROGRAMS)){p.topics.forEach(t=>{let [num,topic,theory,practice,hours]=t;let exists=data.ktp.find(k=>k.semester===1&&k.subject===subject&&String(k.num)===String(num));if(!exists){data.ktp.push({id:Date.now()+Math.random(),semester:1,subject,num,hours,theory,practice,type:practice>0&&theory>0?"Комбинированное":practice>0?"Практика":"Лекция",topic});now++}})}data._programVersion="9.2";data._appVersion="9.3";save();render();if(!silent)alert(`Готово. Установлены 4 программы. Добавлено тем КТП: ${now}.`)}
 
 function render(){selects();renderPrograms();renderWeek();renderLists();renderKtp();renderReports(reportSem);renderHome();renderSettings()}$("date").value=fmt(new Date());
-if(data._programVersion !== "9.2" || !data.ktp.length){installPrograms(true)}
+if(data._programVersion !== "9.3" || !data.ktp.length){installPrograms(true)}
 render();$("period").dispatchEvent(new Event("change"));
 </script><script>
 if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
