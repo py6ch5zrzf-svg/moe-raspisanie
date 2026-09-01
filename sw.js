@@ -1,4 +1,4 @@
-const CACHE = "moe-raspisanie-4-programmy-v1";
+const CACHE = "moe-raspisanie-8-3-v1";
 const ASSETS = ["./", "./index.html", "./manifest.json"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
