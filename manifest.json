@@ -1,1 +1,9 @@
-{"name":"Моё расписание 9.2","short_name":"Расписание 9.2","start_url":"./index.html","display":"standalone","background_color":"#f3f5f7","theme_color":"#17202a","lang":"ru"}
+{
+  "name": "Моё расписание 9.4",
+  "short_name": "Расписание 9.4",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f5f7",
+  "theme_color": "#17202a",
+  "lang": "ru"
+}
