@@ -1,4 +1,4 @@
-const CACHE='moe-raspisanie-9-4';
+const CACHE='moe-raspisanie-9-5';
 const ASSETS=['./','./index.html','./manifest.json'];
 self.addEventListener('install',event=>event.waitUntil(
   caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())
