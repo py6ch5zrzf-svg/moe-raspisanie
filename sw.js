@@ -1,5 +1,5 @@
-const CACHE='moe-raspisanie-9-7';
-const CORE=['./','./index.html','./manifest.json'];
+const CACHE='moe-raspisanie-9-8';
+const CORE=['./','./index.html','./manifest.json','./icon.svg'];
 const XLSX_URL='https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js';
 
 self.addEventListener('install',event=>event.waitUntil((async()=>{
