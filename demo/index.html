@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#182431">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Расписание Demo">
+<title>Моё расписание — Demo 10.0</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="../icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<style>
+:root{color-scheme:light;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#192637;background:#f3f6fa}
+*{box-sizing:border-box}
+body{margin:0}
+header{background:#182431;color:#fff;padding:22px max(18px,calc((100vw - 1050px)/2));}
+h1{font-size:24px;margin:4px 0}h2{font-size:21px}h3{font-size:16px}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tag{border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700;background:#dbeafe;color:#1e40af}
+header .tag{background:#35506c;color:white}
+.sub{opacity:.8;font-size:13px;margin-top:5px}
+nav{background:#fff;border-bottom:1px solid #dce3ec;padding:8px max(12px,calc((100vw - 1050px)/2));display:flex;gap:8px;overflow-x:auto;position:sticky;top:0;z-index:5}
+button{cursor:pointer;font:inherit}
+nav button{border:0;border-radius:9px;background:transparent;padding:11px 12px;white-space:nowrap;font-weight:650;color:#334155}
+nav button.active{background:#182431;color:white}
+main{max-width:1080px;margin:auto;padding:20px 15px 50px}
+.page{display:none}.page.active{display:block}
+.card{background:#fff;border:1px solid #dce3ec;border-radius:14px;padding:19px;margin:0 0 13px;box-shadow:0 1px 4px #121e2d08}
+.muted{color:#64748b}.small{font-size:13px}
+.banner{background:#eff6ff;border:1px solid #bfdbfe;padding:14px;border-radius:12px;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat strong{font-size:26px;display:block;margin-bottom:4px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.primary,.secondary{border-radius:9px;padding:10px 14px;border:1px solid #1d4ed8;font-weight:700}
+.primary{background:#1d4ed8;color:white}.secondary{background:white;color:#1d4ed8}
+.schedule{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.day{border-radius:12px;background:#f1f5f9;padding:10px}
+.day b{font-size:14px}
+.lesson{display:block;width:100%;text-align:left;border:1px solid #bfdbfe;border-left:4px solid #2563eb;background:white;border-radius:9px;padding:12px 9px;margin-top:8px}
+.lesson small{display:block;color:#64748b;margin-top:6px}
+.lesson:hover,.lesson:focus-visible{outline:2px solid #60a5fa}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:12px;border-bottom:1px solid #e2e8f0;font-size:13px}th{background:#f8fafc}
+.tablewrap{overflow-x:auto}
+mark{background:#dcfce7;color:#166534;border-radius:6px;padding:3px 7px}
+.feature-list{margin:8px 0 0 0;padding-left:22px;line-height:1.9}
+.demo-note{font-size:12px;color:#64748b}
+footer{text-align:center;color:#64748b;font-size:12px;padding:20px}
+@media(max-width:720px){.grid{grid-template-columns:1fr 1fr}.schedule{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.schedule{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+@media print{header,nav,.actions,footer{display:none!important}.page{display:none!important}.page.active{display:block!important}}
+</style>
+</head>
+<body>
+<header><div class="header-row"><div><div class="small">ПРИЛОЖЕНИЕ ДЛЯ ПРЕПОДАВАТЕЛЯ</div><h1>📚 Моё расписание</h1><div class="sub">Демонстрационная версия 10.0 · работает на iPhone и компьютере</div></div><span class="tag">DEMO · БЕСПЛАТНО</span></div></header>
+<nav aria-label="Разделы приложения">
+<button data-page="home" class="active" aria-current="page">Главная</button>
+<button data-page="schedule">Расписание</button>
+<button data-page="journal">Журнал</button>
+<button data-page="reports">Ведомости</button>
+<button data-page="pro">Возможности Pro</button>
+</nav>
+<main>
+<div class="banner"><b>Безопасное знакомство с приложением.</b> Здесь только вымышленные учебные данные. Редактирование, импорт и экспорт доступны в будущей версии Pro. Демо не читает существующие данные приложения 9.8.4.</div>
+<section id="home" class="page active">
+<div class="card"><h2>Рабочий стол преподавателя</h2><p class="muted">Пример учебной недели для группы ДЕМО-01. Попробуйте открыть расписание и перейти из занятия прямо в журнал.</p><div class="actions"><button class="primary" data-page="schedule">Открыть расписание</button><button class="secondary" data-page="pro">Сравнить с Pro</button></div></div>
+<div class="grid">
+<div class="card stat"><strong>1</strong>Демонстрационная группа</div>
+<div class="card stat"><strong>8</strong>Вымышленных студентов</div>
+<div class="card stat"><strong>2</strong>Учебные дисциплины</div>
+</div>
+<div class="card"><h3>Что можно посмотреть</h3><p>Расписание занятий, пример оценок и посещаемости, итоговую ведомость за период. Содержимое фиксировано, чтобы никто не загрузил настоящие персональные данные.</p></div>
+</section>
+<section id="schedule" class="page">
+<div class="card"><h2>Расписание · демонстрационная неделя</h2><p class="muted">Нажмите на карточку занятия, чтобы открыть журнал соответствующей дисциплины.</p><div id="week" class="schedule"></div></div>
+</section>
+<section id="journal" class="page">
+<div class="card"><h2>Электронный журнал</h2><p class="muted">Группа ДЕМО-01 · <b id="subjectTitle">Основы топографии</b></p><div class="actions" id="subjectButtons"></div><div class="tablewrap"><table><thead><tr><th>Студент</th><th>Оценка</th><th>Посещаемость</th></tr></thead><tbody id="journalRows"></tbody></table></div><p class="demo-note">Демо доступно только для просмотра: оценки и посещаемость не сохраняются и не редактируются.</p></div>
+</section>
+<section id="reports" class="page">
+<div class="card"><h2>Демонстрационная ведомость</h2><p class="muted">Учебная группа ДЕМО-01 · пример расчёта среднего балла по предметам.</p><div class="tablewrap"><table><thead><tr><th>Студент</th><th>Основы топографии</th><th>Инженерная графика</th></tr></thead><tbody id="reportRows"></tbody></table></div><p class="demo-note">В полной версии доступен экспорт ведомостей и журналов в Excel.</p></div>
+</section>
+<section id="pro" class="page">
+<div class="card"><h2>«Моё расписание Pro»</h2><p>Полная версия для настоящей преподавательской работы: собственные группы и дисциплины, КТП, расписание, журнал, ведомости, импорт Excel, резервные копии и офлайн-режим.</p><ul class="feature-list"><li>Группы и студенты без демонстрационных ограничений</li><li>Оценки, посещаемость, занятия и контроль учебной нагрузки</li><li>Импорт и экспорт файлов Excel</li><li>Резервное копирование и восстановление</li><li>Лицензирование для преподавателей и учебных заведений</li></ul><p><b>Оформление лицензий пока не запущено.</b> Демо ничего не продаёт и не запрашивает оплату.</p></div>
+</section>
+</main>
+<footer>Моё расписание Demo 10.0 · используются только синтетические данные</footer>
+<script>
+"use strict";
+const people=Array.from({length:8},(_,i)=>"Студент "+String(i+1).padStart(2,"0"));
+const subjects=["Основы топографии","Инженерная графика"];
+const lessons=[
+{day:"Понедельник",time:"09:00–10:30",subject:0,topic:"Условные знаки"},
+{day:"Вторник",time:"10:40–12:10",subject:1,topic:"Типы линий"},
+{day:"Среда",time:"09:00–10:30",subject:0,topic:"Масштабы"},
+{day:"Четверг",time:"12:30–14:00",subject:1,topic:"Виды детали"},
+{day:"Пятница",time:"10:40–12:10",subject:0,topic:"Ориентирование"}
+];
+const marks=[[5,4,5,4,3,5,4,5],[4,5,4,5,4,3,5,4]];
+const present=[[true,true,true,true,false,true,true,true],[true,true,false,true,true,true,true,true]];
+let subjectIndex=0;
+function page(name){
+ document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===name));
+ document.querySelectorAll("nav button").forEach(b=>{const on=b.dataset.page===name;b.classList.toggle("active",on);if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current")});
+ if(name==="journal")renderJournal();
+ if(name==="reports")renderReports();
+ window.scrollTo({top:0,behavior:"instant"});
+}
+function renderWeek(){
+ const root=document.getElementById("week");
+ root.innerHTML=lessons.map((l,i)=>`<div class="day"><b>${l.day}</b><button class="lesson" data-subject="${l.subject}" aria-label="Открыть журнал: ${subjects[l.subject]}"><strong>${subjects[l.subject]}</strong><small>${l.time}</small><small>${l.topic} · ДЕМО-01</small></button></div>`).join("");
+}
+function renderJournal(){
+ document.getElementById("subjectTitle").textContent=subjects[subjectIndex];
+ document.getElementById("subjectButtons").innerHTML=subjects.map((s,i)=>`<button class="${i===subjectIndex?"primary":"secondary"}" data-subject="${i}">${s}</button>`).join("");
+ document.getElementById("journalRows").innerHTML=people.map((p,i)=>`<tr><td>${p}</td><td><mark>${marks[subjectIndex][i]}</mark></td><td>${present[subjectIndex][i]?"Присутствовал":"Отсутствовал"}</td></tr>`).join("");
+}
+function renderReports(){
+ document.getElementById("reportRows").innerHTML=people.map((p,i)=>`<tr><td>${p}</td><td>${marks[0][i].toFixed(1)}</td><td>${marks[1][i].toFixed(1)}</td></tr>`).join("");
+}
+document.addEventListener("click",e=>{
+ const button=e.target.closest("button");
+ if(!button)return;
+ if(button.dataset.subject!==undefined){subjectIndex=Number(button.dataset.subject);page("journal");return}
+ if(button.dataset.page)page(button.dataset.page);
+});
+renderWeek();renderJournal();renderReports();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{});
+</script>
+</body>
+</html>
