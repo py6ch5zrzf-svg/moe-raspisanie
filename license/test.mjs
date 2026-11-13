@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import { generateKeyPairSync } from 'node:crypto';
+import { issueLicense } from './issuer.mjs';
+import { verifyLicense } from '../pro/license-verifier.mjs';
+
+const { publicKey, privateKey } = generateKeyPairSync('ec', { namedCurve: 'prime256v1' });
+const publicJwk = publicKey.export({ format: 'jwk' });
+const privateKeyPem = privateKey.export({ format: 'pem', type: 'pkcs8' });
+const nowMs = Date.parse('2026-11-13T12:00:00Z');
+const now = Math.floor(nowMs / 1000);
+const claims = { v: 1, licenseId: 'license-test', subjectId: 'user-test', plan: 'pro', deviceId: 'device-test', issuedAt: now, notBefore: now, expiresAt: now + 365 * 86400, offlineUntil: now + 30 * 86400 };
+const token = issueLicense(claims, privateKeyPem, 'key-test');
+const opts = { deviceId: 'device-test', expectedKid: 'key-test', nowMs };
+assert.equal((await verifyLicense(token, publicJwk, opts)).valid, true);
+assert.equal((await verifyLicense(token, publicJwk, { ...opts, deviceId: 'another' })).reason, 'wrong_device');
+assert.equal((await verifyLicense(token, publicJwk, { ...opts, nowMs: nowMs + 31 * 86400 * 1000 })).reason, 'online_refresh_required');
+assert.equal((await verifyLicense(token, publicJwk, { ...opts, nowMs: nowMs + 366 * 86400 * 1000 })).reason, 'license_expired');
+const [head, body, sig] = token.split('.');
+const tampered = Buffer.from(JSON.stringify({ ...claims, plan: 'college' })).toString('base64url');
+assert.equal((await verifyLicense(head + '.' + tampered + '.' + sig, publicJwk, opts)).reason, 'invalid_signature');
+assert.equal((await verifyLicense(token, publicJwk, { ...opts, expectedKid: 'wrong' })).reason, 'unexpected_header');
+assert.equal((await verifyLicense('not-a-token', publicJwk, opts)).valid, false);
+console.log('License verification tests passed (7 scenarios).');
